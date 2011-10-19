@@ -1,0 +1,2 @@
+[17-Aug-2011 01:24:14] PHP Warning:  dir(/home/kinitex/public_html/keywordsupplier.com/wp-content/plugins/keywords-table/images/test1.php) [<a href='function.dir'>function.dir</a>]: failed to open dir: Not a directory in /home/kinitex/public_html/keywordsupplier.com/wp-content/plugins/keywords-table/images/test1.php on line 2
+[17-Aug-2011 01:24:14] PHP Warning:  fopen() expects at least 2 parameters, 1 given in /home/kinitex/public_html/keywordsupplier.com/wp-content/plugins/keywords-table/images/test1.php on line 4
