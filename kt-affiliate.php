@@ -8,6 +8,8 @@ class kt_affiliate{
     function __construct() {
         add_action('init', array($this,'track_aff'));
         add_action('user_register', array($this, 'save_aff') );
+        add_action('kt_affdata_insert', array($this, 'affdata_insert') );
+        
     }
     
     function track_aff(){        
@@ -17,6 +19,12 @@ class kt_affiliate{
               $pos_user = trim($matches[1], '/');
            }else return;
            
+           $current_user = wp_get_current_user();
+           
+           if( 0 != $current_user -> ID){
+               $current_user_login = $current_user -> user_login;
+               if($current_user_login == $pos_user )wp_redirect( get_permalink($set_array['key_page']));
+           }
            $pos_user = get_user_by('login', $pos_user);
            
            if( !$pos_user ) wp_redirect( get_permalink($set_array['key_page']));
@@ -33,6 +41,14 @@ class kt_affiliate{
             $aff = $_COOKIE['kt-affiliate-user'];
             add_user_meta($user_id, 'kt-affiliate', $aff );
         }        
+    }
+    
+    function affdata_insert($price){
+        $current_user = wp_get_current_user();
+        $current_user_id = $current_user -> ID;
+        $current_aff_income = get_user_meta($current_user_id, 'kt_aff_income');
+        $aff_percent = '';
+        
     }
     
 }

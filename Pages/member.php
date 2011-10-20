@@ -66,5 +66,8 @@ Repeat Password:
 			</tr>	
 		</tfoot>
 	</table>
+        
+        
+        <h2>Affiliate Status:</h2>
 </div>
 

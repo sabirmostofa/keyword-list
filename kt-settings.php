@@ -84,6 +84,8 @@ wp_dropdown_pages( array( 'name' => 'key_page', 'selected' => $key_page ));
  <br/>
  <br/>
  
+ 
+  <h4>Affiliate Settings</h4>
  Truncate Any Table(Use this feature to wipe All data from a table):
  <select name='truncate'>
  <option selected="selected">None</option>

@@ -171,7 +171,8 @@ class wpKeywordsTable{
 			elseif( isset($_GET['PayerID']) ):
 				@session_start();
 				$response = $this -> hash_call( $_SESSION['price'], 'DoExpressCheckoutPayment', $_GET['PayerID'], $itemN );		
-				if($response['ACK'] == 'Success'){
+				if($response['ACK'] == 'Success'){                                                                                        
+                                                                                        do_action('kt_affdate_insert', $_SESSION['price']);        
 					$this -> populate_table($_COOKIE['cItems']);
 					$this -> populate_orders($vars);
 					setcookie( 'cItems', '', time()-100,'/' );
