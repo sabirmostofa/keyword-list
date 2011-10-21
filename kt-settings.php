@@ -12,7 +12,8 @@ if(isset($_POST['main-submit'])):
 	'api_pas' => $api_pas,
 	'api_sig' => $api_sig,
 	'api_end' => $api_end, 
-	'api_url' => $api_url
+	'api_url' => $api_url,
+                  'aff_percent' => $aff_percent
 	 ) );
 	 if( ($table =$_POST['truncate']) != 'None' ){
 		$wpdb->query("truncate table {$table}");
@@ -86,6 +87,11 @@ wp_dropdown_pages( array( 'name' => 'key_page', 'selected' => $key_page ));
  
  
   <h4>Affiliate Settings</h4>
+     Affiliate Percentage(Only the number)
+ <input style="width:40%" type='text' name='aff_percent' value="<?php echo $aff_percent ?>"/>
+ <br/>
+ <br/>
+  <h4>Additional Tools</h4>
  Truncate Any Table(Use this feature to wipe All data from a table):
  <select name='truncate'>
  <option selected="selected">None</option>

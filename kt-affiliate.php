@@ -9,6 +9,7 @@ class kt_affiliate{
         add_action('init', array($this,'track_aff'));
         add_action('user_register', array($this, 'save_aff') );
         add_action('kt_affdata_insert', array($this, 'affdata_insert') );
+        add_action('admin_menu', array($this,'CreateMenu'),50);
         
     }
     
@@ -47,9 +48,19 @@ class kt_affiliate{
         $current_user = wp_get_current_user();
         $current_user_id = $current_user -> ID;
         $current_aff_income = get_user_meta($current_user_id, 'kt_aff_income');
-        $aff_percent = '';
+        $opts = get_option('kt-settings-var');
+        $aff_percent = $opts['aff_percent'];
         
     }
+    
+    function CreateMenu(){
+        add_submenu_page('tools.php','KT Affiliates','KT Affiliates','activate_plugins','wpKtAffs',array($this,'KTAffs'));
+        }
+     
+        function KTAffs(){
+            require_once 'kt-affs.php';
+        }
+        
     
 }
 ?>

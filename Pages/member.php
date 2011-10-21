@@ -2,9 +2,17 @@
 global $wpdb;
 $table_heads = array('Date', 'User', 'Amount', 'Price','Keywords','Export CSV','View in Table');
 extract( get_option('kt-settings-var') ); 
-if( $current = wp_get_current_user())
-		$current = $current -> ID;
-$res = $wpdb -> get_results("select * from wp_kt_orders where member_id ='$current' order  by date desc",'ARRAY_A');
+ $current = wp_get_current_user();
+$user_id = $current -> ID;
+if($user_id == 0){
+    ?>
+ <h4> You need to be registered to view this page</h4>
+<a style ='float:left;margin-left:20px;' href='<?php echo get_permalink( $check_page);  ?>'>Register here</a>
+<?php
+    return;
+    
+}
+$res = $wpdb -> get_results("select * from wp_kt_orders where member_id ='$user_id' order  by date desc",'ARRAY_A');
 extract($res);
 
 
@@ -69,5 +77,6 @@ Repeat Password:
         
         
         <h2>Affiliate Status:</h2>
+      <p> Your affiliate link is <span> <?php echo  site_url().'/affiliates/'.$current -> user_login ?></span></p>
 </div>
 
