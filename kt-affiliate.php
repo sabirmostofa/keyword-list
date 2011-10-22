@@ -48,7 +48,18 @@ class kt_affiliate{
         if(isset($_COOKIE['kt-affiliate-user'])){            
             $aff = $_COOKIE['kt-affiliate-user'];
             if(!get_user_meta($user_id, 'kt-affiliate'))
-            add_user_meta($user_id, 'kt-affiliate', $aff );
+                add_user_meta($user_id, 'kt-affiliate', $aff );
+            if($all_affs = get_user_meta($aff,'kt-aff-users', true)){
+                if(!in_array($user_id, $all_affs)){
+                        $all_affs[]=$user_id;
+                  update_user_meta($aff,'kt-aff-users',$all_affs);      
+                } 
+                
+            }else{
+                add_user_meta($aff, 'kt-aff-users', array($user_id));
+            }
+                    
+                    
         }        
     }
     
