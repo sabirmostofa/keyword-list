@@ -172,9 +172,10 @@ class wpKeywordsTable{
 				@session_start();
 				$response = $this -> hash_call( $_SESSION['price'], 'DoExpressCheckoutPayment', $_GET['PayerID'], $itemN );		
 				if($response['ACK'] == 'Success'){                                                                                        
-                                                                                        do_action('kt_affdate_insert', $_SESSION['price']);        
+                                                                                              
 					$this -> populate_table($_COOKIE['cItems']);
-					$this -> populate_orders($vars);
+					$order_id = $this -> populate_orders($vars);
+                                                                                        do_action('kt_affdate_insert', $_SESSION['price'], $order_id);  
 					setcookie( 'cItems', '', time()-100,'/' );
 					setcookie( 'keyExtPrice', '', time()-100,'/' );
 				}
@@ -213,6 +214,8 @@ class wpKeywordsTable{
 			$itemS = trim($itemS, ',');
                                   $key_ext = ( isset($_COOKIE['keyExtPrice']))? 1:0;
 		$wpdb -> query("insert into wp_kt_orders (member_id, key_ids,price,key_ext) values('$id','$itemS', '$itemP', '$key_ext') "); 
+                                    $order_id = $wpdb -> get_var("SELECT id from wp_kt_orders order by id desc limit 1");
+                                    return $order_id;
 		}
 	
 	function after_register($i){

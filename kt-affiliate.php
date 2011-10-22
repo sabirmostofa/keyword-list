@@ -63,12 +63,17 @@ class kt_affiliate{
         }        
     }
     
-    function affdata_insert($price){
+    function affdata_insert($price,$order_id){
         $current_user = wp_get_current_user();
         $current_user_id = $current_user -> ID;
-        $current_aff_income = get_user_meta($current_user_id, 'kt_aff_income');
-        $opts = get_option('kt-settings-var');
-        $aff_percent = $opts['aff_percent'];
+          $opts = get_option('kt-settings-var');
+          $aff_percent = $opts['aff_percent'];
+        if( $aff = $this -> has_aff($current_user_id)){
+            
+        }
+            else return;
+        //$current_aff_income = get_user_meta($current_user_id, 'kt_aff_income');
+      
         
     }
     
@@ -78,6 +83,10 @@ class kt_affiliate{
      
         function KTAffs(){
             require_once 'kt-affs.php';
+        }
+        
+        function has_aff($user_id){          
+            return get_user_meta($user_id, 'kt-affiliate',true);
         }
         
     
