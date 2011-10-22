@@ -64,11 +64,14 @@ class kt_affiliate{
     }
     
     function affdata_insert($price,$order_id){
+        global $wpdb;
         $current_user = wp_get_current_user();
         $current_user_id = $current_user -> ID;
           $opts = get_option('kt-settings-var');
           $aff_percent = $opts['aff_percent'];
         if( $aff = $this -> has_aff($current_user_id)){
+            $aff_income = $price *($aff_percent/100);
+            $wpdb -> query("insert into wp_kt_affs(user_id,referred_user_id,order_id, aff_income) values('$aff','$current_user_id','$order_id', '$aff_income')");
             
         }
             else return;

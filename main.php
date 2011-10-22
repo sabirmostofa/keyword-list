@@ -324,11 +324,11 @@ class wpKeywordsTable{
 		)";
 		$sql3 =  "CREATE TABLE IF NOT EXISTS `wp_kt_affs` (
 		`user_id` int unsigned NOT NULL,
-		`aff_user_id` int unsigned  NOT NULL , 
+		`referred_user_id` int unsigned  NOT NULL , 
 		`order_id` int unsigned  NOT NULL default 0 , 
-		`aff_income` int unsigned  NOT NULL default 0 ,		
-		PRIMARY KEY (`user_id`),			
-		key `aff_key`(`aff_user_id`)		
+		`aff_income` float(8,2)  NOT NULL default 0 ,		
+		PRIMARY KEY (`order_id`),			
+		key `aff_key`(`referred_user_id`)		
 		)";
 		dbDelta($sql);
 		dbDelta($sql1);
