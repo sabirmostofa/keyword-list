@@ -41,7 +41,7 @@ class wpKeywordsTable{
 		}
 		
 	function admin_scripts(){
-		if( stripos( $_SERVER['REQUEST_URI'], 'wpKeywordsTable' ) !==false && stripos($_SERVER['REQUEST_URI'], 'wpKtAffs') ){					
+		if( stripos( $_SERVER['REQUEST_URI'], 'wpKeywordsTable' ) !==false || stripos($_SERVER['REQUEST_URI'], 'wpKtAffs') !== false ){					
 			wp_enqueue_script('jquery');
 			wp_enqueue_script('kt_autocomplete_script',plugins_url('/' , __FILE__). 'js/jquery.autocomplete-min.js');	
 			wp_enqueue_script('kt_admin_script',plugins_url('/' , __FILE__).'js/script_admin.js');
