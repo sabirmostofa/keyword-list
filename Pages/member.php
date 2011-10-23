@@ -75,8 +75,31 @@ Repeat Password:
 		</tfoot>
 	</table>
         
+        <?php
+        // Genreating aff vars
         
+         $ref_user_count = (get_user_meta($user_id, 'kt-aff-users',true))? count(get_user_meta($user_id, 'kt-aff-users',true)) :0;
+        $incomes = $wpdb->get_col( "SELECT aff_income FROM wp_kt_affs where  user_id='$user_id'", 'ARRAY_N' );
+        $total_income=($incomes)? array_sum($incomes) : 0;
+        if(isset($_POST['kt_paypal_email']))
+            add_user_meta($user_id, 'kt-aff-paypal-email', $_POST['kt_paypal_email']);
+        $paypal_email = get_user_meta($user_id, 'kt-aff-paypal-email',true);
+        $user_paypal_email =$paypal_email ?$paypal_email :'';
+        ?>
         <h2>Affiliate Status:</h2>
-      <p> Your affiliate link is <span> <?php echo  site_url().'/affiliates/'.$current -> user_login ?></span></p>
+        <p> Your affiliate link is <span> <?php echo  site_url().'/affiliates/'.$current -> user_login ?></span></p>
+        
+        <h2>Referred Users:</h2>
+         You have Referred <?php echo $ref_user_count ?> Users;
+        
+        <h2>Affiliate Earning:</h2>
+        Total Amount:  $<?php echo $total_income ?><br/> 
+        Paid: $
+        <h2>Paypal Account Email:</h2>
+        <form method="post" action="">
+            <input type="text" name="kt_paypal_email" value="<?php echo $user_paypal_email ?>"/>
+            <input type="submit" value="submit"/>
+        </form>
+      
 </div>
 
