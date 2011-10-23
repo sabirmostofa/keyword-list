@@ -13,17 +13,22 @@ if($all_users)
     var_dump($_POST);
     
     // Paying to the selected affiliates
-    if(isset($_POST['users']))
+    if(isset($_POST['users'])){
+        $user_emails=array();
         foreach($_POST['users'] as $user_id => $none):
+             $user_data = get_userdata($user_id);
+            
+            $user_emails[]=$user_data;
             
             
         endforeach;
     
-
+    }
 ?>
 
 <div class='wrap' style="margin-top:20px">
     <form action="" method="post">
+
     <table id='kt-main' class='widefat'>
         <thead>
             <tr>
@@ -54,7 +59,8 @@ if($all_users)
                 <?php endforeach;  ?>
         </tbody>
     </table>
-    
-    <input type="submit" value="Pay now">
+    <br/>
+    <br/>
+    <input class="button-primary" type="submit" value="Pay now">
     </form>
 </div>
