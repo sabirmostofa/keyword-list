@@ -1,6 +1,6 @@
 <?php
 global $wpdb;
-$table_heads = array('Select', 'User', 'Aff_earning', 'Paid', 'Unpaid');
+$table_heads = array('Select', 'User', 'Aff Earning', 'Paid', 'Unpaid', 'Paypal email');
 
 $all_users = $wpdb -> get_col("select user_id from wp_kt_affs");
 if($all_users)
@@ -30,6 +30,8 @@ if($all_users)
                     $tot_income = array_sum($incomes);
                     $paid = get_user_meta($user, 'kt_aff_paid',true);
                     $paid = $paid?$paid :0;
+                    $paypal_email = get_user_meta($user, 'kt-aff-paypal-email',true);
+                    if(!$paypal_email)continue;
                      ?>
                 <tr>
                     <td><input type="checkbox" name="<?php ?>"/></td>
@@ -37,6 +39,7 @@ if($all_users)
                     <td><?php echo $tot_income ?></td>
                     <td><?php echo $paid ?></td>
                     <td><?php echo $tot_income - $paid ?></td>
+                    <td><?php echo $paypal_email ?></td>
                 </tr>
                 <?php endforeach;  ?>
         </tbody>

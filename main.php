@@ -41,7 +41,7 @@ class wpKeywordsTable{
 		}
 		
 	function admin_scripts(){
-		if(preg_match('/wpKeywordsTable/',$_SERVER['REQUEST_URI'])){					
+		if( stripos( $_SERVER['REQUEST_URI'], 'wpKeywordsTable' ) !==false && stripos($_SERVER['REQUEST_URI'], 'wpKtAffs') ){					
 			wp_enqueue_script('jquery');
 			wp_enqueue_script('kt_autocomplete_script',plugins_url('/' , __FILE__). 'js/jquery.autocomplete-min.js');	
 			wp_enqueue_script('kt_admin_script',plugins_url('/' , __FILE__).'js/script_admin.js');
