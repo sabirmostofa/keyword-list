@@ -1,6 +1,7 @@
 <?php
 global $wpdb;
 $table_heads = array('Select', 'User', 'Aff Earning', 'Paid', 'Unpaid', 'Paypal email');
+if( get_option('kt-settings-var') )extract( get_option('kt-settings-var'));
 
 $all_users = $wpdb -> get_col("select user_id from wp_kt_affs");
 if($all_users)
@@ -15,13 +16,39 @@ if($all_users)
     // Paying to the selected affiliates
     if(isset($_POST['users'])){
         $user_emails=array();
-        foreach($_POST['users'] as $user_id => $none):
-             $user_data = get_userdata($user_id);
-            
-            $user_emails[]=$user_data;
-            
-            
+        $nvpstr = '';
+        $common = array( 
+                'METHOD' => 'MassPay',
+                 'VERSION' => '65.1',
+	'USER' => $api_user,
+	'PWD' => $api_pas,
+	'SIGNATURE' => $api_sig
+	);
+        
+                $str = '';
+	foreach ($common as $key=> $value)
+		$str .= "&{$key}={$value}";
+	$nvpstr = trim($str, '&');
+        $j = 0;
+        
+        foreach($_POST['users'] as $user_id => $none):           
+            $paypal_email = get_user_meta($user_id, 'kt-aff-paypal-email',true);        
+             $incomes= $wpdb -> get_col("select aff_income from wp_kt_affs where user_id='$user_id'");
+             $tot_income = array_sum($incomes);
+             $paid = get_user_meta($user_id, 'kt_aff_paid',true);
+             $paid = $paid?$paid :0;
+             $unpaid = $tot_income - $paid;
+             $note = urlencode( str_replace('[payment_amount]', '$'.$unpaid, $aff_mail_body));
+             $uniqueID='';
+             $nvpstr.="&L_EMAIL$j=$paypal_email&L_Amt$j=$unpaid&L_UNIQUEID$j=$uniqueID&L_NOTE$j=$note";
+             $j++;
+                       
         endforeach;
+        
+        $emailSubject=  urlencode($aff_mail_sub);
+        $receiverType ='EmailAddress';
+        $currency='USD';
+        $nvpstr.="&EMAILSUBJECT=$emailSubject&RECEIVERTYPE=$receiverType&CURRENCYCODE=$currency" ;
     
     }
 ?>
