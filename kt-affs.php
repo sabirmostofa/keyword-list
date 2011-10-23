@@ -11,7 +11,7 @@ if($all_users)
     echo 'No affiliates earning recorded yet.';
     return;
     }
-    var_dump($_POST);
+    //var_dump($_POST);
     
     // Paying to the selected affiliates
     if(isset($_POST['users'])){
@@ -59,7 +59,7 @@ if($all_users)
              $paid = get_user_meta($user_id, 'kt_aff_paid',true);
              $paid = $paid?$paid :0;
              $unpaid = $tot_income - $paid;
-             $paid =update_user_meta($user_id, 'kt_aff_paid',$unpaid);
+             update_user_meta($user_id, 'kt_aff_paid',$unpaid);
    
                        
         endforeach;

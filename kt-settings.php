@@ -41,6 +41,7 @@ if(isset($_POST['main-submit']))
 <?php 
 //var_dump( get_option('kt-settings-var'));
 if( get_option('kt-settings-var') )extract( get_option('kt-settings-var'));
+$aff_percent = (isset($aff_percent))? $aff_percent: 20;
 $aff_mail_sub = isset($aff_mail_sub)? $aff_mail_sub : 'Payment Received from Keywordsupplier';
 $aff_mail_body = isset($aff_mail_body)? $aff_mail_body : 'You have received payment of [payment_amount] from keywordsupplier.com as affiliate earning ';
 wp_dropdown_pages( array( 'name' => 'key_page', 'selected' => $key_page )); 
