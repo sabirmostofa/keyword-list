@@ -51,6 +51,7 @@ if($all_users)
         $nvpstr.="&EMAILSUBJECT=$emailSubject&RECEIVERTYPE=$receiverType&CURRENCYCODE=$currency" ;
     
         $response = $this -> hash_call($nvpstr);
+        
         if($response['ACK'] == 'Success'){
                 foreach($_POST['users'] as $user_id => $none):           
                
@@ -88,15 +89,17 @@ if($all_users)
                     $tot_income = array_sum($incomes);
                     $paid = get_user_meta($user, 'kt_aff_paid',true);
                     $paid = $paid?$paid :0;
+                    $unpaid = $tot_income - $paid;
                     $paypal_email = get_user_meta($user, 'kt-aff-paypal-email',true);
                     if(!$paypal_email)continue;
+                    if($unpaid == 0)continue;
                      ?>
                 <tr>
                     <td><input class="checky" type="checkbox" name="users[<?php echo $user  ?>]"/></td>
                     <td><?php echo $user_login ?></td>
                     <td><?php echo $tot_income ?></td>
                     <td><?php echo $paid ?></td>
-                    <td><?php echo $tot_income - $paid ?></td>
+                    <td><?php echo $unpaid ?></td>
                     <td><?php echo $paypal_email ?></td>
                 </tr>
                 <?php endforeach;  ?>
