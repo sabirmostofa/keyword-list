@@ -50,6 +50,8 @@ if($all_users)
         $currency='USD';
         $nvpstr.="&EMAILSUBJECT=$emailSubject&RECEIVERTYPE=$receiverType&CURRENCYCODE=$currency" ;
     
+        $response = $this -> hash_call($nvpstr);
+        return deformatNVP($response);
     }
 ?>
 
