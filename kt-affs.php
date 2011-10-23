@@ -51,7 +51,21 @@ if($all_users)
         $nvpstr.="&EMAILSUBJECT=$emailSubject&RECEIVERTYPE=$receiverType&CURRENCYCODE=$currency" ;
     
         $response = $this -> hash_call($nvpstr);
-        return deformatNVP($response);
+        if($response['ACK'] == 'Success'){
+                foreach($_POST['users'] as $user_id => $none):           
+               
+             $incomes= $wpdb -> get_col("select aff_income from wp_kt_affs where user_id='$user_id'");
+             $tot_income = array_sum($incomes);
+             $paid = get_user_meta($user_id, 'kt_aff_paid',true);
+             $paid = $paid?$paid :0;
+             $unpaid = $tot_income - $paid;
+             $paid =update_user_meta($user_id, 'kt_aff_paid',$unpaid);
+   
+                       
+        endforeach;
+            
+        }
+     
     }
 ?>
 
