@@ -21,8 +21,8 @@ class kt_affiliate{
            }else return;
            
            $current_user = wp_get_current_user();
-           
-           if( 0 == $current_user -> ID)$this ->redirect_to_keypage(); 
+           $current_user_login = '';
+           if( 0 != $current_user -> ID)
              $current_user_login = $current_user -> user_login;
              
              if($current_user_login == $pos_user )$this ->redirect_to_keypage(); 
