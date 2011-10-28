@@ -26,6 +26,8 @@ class wpKeywordsTable {
         add_action('wp_print_styles', array($this, 'front_css'));
         add_action('wp_ajax_myajax-submit', array($this, 'ajax_handle'));
         add_action('wp_ajax_ajax_remove', array($this, 'ajax_remove'));
+        add_action('wp_ajax_coupon_ajax_remove', array($this, 'coupon_ajax_remove'));
+        add_action('wp_ajax_coupon_ajax_remove_all', array($this, 'coupon_ajax_remove_all'));
         add_action('wp_ajax_ajax_remove_multiple', array($this, 'ajax_remove_multiple'));
         add_action('wp_ajax_show_next', array($this, 'ajax_next_page_show'));
         add_action('wp_ajax_ajax_getId', array($this, 'ajax_process_insert'));
@@ -40,7 +42,7 @@ class wpKeywordsTable {
     }
 
     function admin_scripts() {
-        if (stripos($_SERVER['REQUEST_URI'], 'wpKeywordsTable') !== false || stripos($_SERVER['REQUEST_URI'], 'wpKtAffs') !== false) {
+        if (stripos($_SERVER['REQUEST_URI'], 'wpKeywordsTable') !== false || stripos($_SERVER['REQUEST_URI'], 'wpKtAffs') !== false || stripos($_SERVER['REQUEST_URI'], 'wpKeywordsCoupons') !== false ) {
             wp_enqueue_script('jquery');
             wp_enqueue_script('kt_autocomplete_script', plugins_url('/', __FILE__) . 'js/jquery.autocomplete-min.js');
             wp_enqueue_script('kt_admin_script', plugins_url('/', __FILE__) . 'js/script_admin.js');
@@ -83,6 +85,7 @@ class wpKeywordsTable {
         add_submenu_page('tools.php', 'Keywords Table', 'Keywords Table', 'activate_plugins', 'wpKeywordsTable', array($this, 'OptionsPage'));
         add_submenu_page('tools.php', 'KT Settings', 'KT Settings', 'activate_plugins', 'wpKeywordsOptions', array($this, 'KTSettings'));
         add_submenu_page('tools.php', 'KT Orders', 'KT Orders', 'activate_plugins', 'wpKeywordsOrders', array($this, 'KTOrders'));
+        add_submenu_page('tools.php', 'KT Coupons', 'KT Coupons', 'activate_plugins', 'wpKeywordsCoupons', array($this, 'KTCoupons'));
     }
 
     function content_generate($content) {
@@ -244,6 +247,32 @@ class wpKeywordsTable {
         echo $test = $wpdb->query("delete from wp_keywords_list where keyword='$key'");
         exit;
     }
+    
+    function coupon_ajax_remove() {
+        $coupons = get_option('kt_all_coupons');
+        foreach($coupons as $key=> $value):
+            if($value[0] == $_REQUEST['key'])
+                unset ($coupons[$key]);
+           
+        endforeach;
+         update_option('kt_all_coupons', $coupons);
+        exit;
+    }
+    
+    function coupon_ajax_remove_all() {
+        $coupons = get_option('kt_all_coupons');
+        $keys = explode(',', $_REQUEST['keys']);
+       
+        foreach($coupons as $key=> $value):
+            foreach($keys as $single):
+            if($value[0] == $single)
+                unset ($coupons[$key]);
+            endforeach;
+            
+        endforeach;
+        update_option('kt_all_coupons', $coupons);
+        exit;
+    }
 
     function ajax_remove_multiple() {
         global $wpdb;
@@ -338,6 +367,9 @@ class wpKeywordsTable {
 
     function KTOrders() {
         require_once 'kt-orders.php';
+    }
+    function KTCoupons() {
+        require_once 'kt-coupons.php';
     }
 
     //Processing data

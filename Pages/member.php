@@ -99,14 +99,14 @@ $last_month_ts = $this_month_ts - (30 * 24 * 3600);
 $last_last_month_ts = $this_month_ts - (2 * 30 * 24 * 3600);
 
 $this_month_income = $wpdb -> get_results("SELECT wp_kt_affs.aff_income from wp_kt_affs inner join wp_kt_orders on wp_kt_affs.order_id=wp_kt_orders.id  where wp_kt_affs.user_id =$user_id and wp_kt_orders.date >$this_month_ts",'ARRAY_N');
-$this_month_income=array_sum( $this_month_income[0]);
+$this_month_income=(empty ($this_month_income))?0:array_sum( $this_month_income[0]);;
 
 $last_month_income = $wpdb -> get_results("SELECT wp_kt_affs.aff_income from wp_kt_affs inner join 
         wp_kt_orders on wp_kt_affs.order_id=wp_kt_orders.id  
         where wp_kt_affs.user_id =$user_id  and wp_kt_orders.date >$last_month_ts and 
         wp_kt_orders.date <$this_month_ts",
         'ARRAY_N');
-var_dump($last_month_income);
+        
 $last_month_income = (empty ($last_month_income))?0:array_sum( $last_month_income[0]);;
 
 
@@ -128,9 +128,9 @@ $last_last_month_income = (empty ($last_last_month_income))?0:array_sum( $last_l
     Paid:$<?php echo $paid; ?>
     <br/>
    <h2> Earning by Month:</h2>
-    <b><?php echo $this_month; ?>:</b> <?php echo $this_month_income; ?><br/>
-    <b><?php echo $last_month; ?>:</b> <?php echo $last_month_income; ?><br/>
-    <b><?php echo $last_last_month; ?>:</b> <?php echo $last_last_month_income; ?>
+    <b><?php echo $this_month; ?>:</b> <?php echo '$',$this_month_income; ?><br/>
+    <b><?php echo $last_month; ?>:</b> <?php echo '$',$last_month_income; ?><br/>
+    <b><?php echo $last_last_month; ?>:</b> <?php echo '$',$last_last_month_income; ?>
     
     <h2>Paypal Account Email:</h2>
     <form method="post" action="">
