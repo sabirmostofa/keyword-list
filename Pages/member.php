@@ -87,8 +87,9 @@ $paypal_email = get_user_meta($user_id, 'kt-aff-paypal-email', true);
 $user_paypal_email = $paypal_email ? $paypal_email : '';
 $paid = get_user_meta($user_id, 'kt_aff_paid', true) ? get_user_meta($user_id, 'kt_aff_paid', true) : 0;
 
+$now = getdate();
 $months = array('January', 'Ferbruary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-$this_month = $now['month'];
+echo $this_month = $now['month'];
 
 $last_month = (($now['mon'] - 2) < 0) ? $months[10 - ($now['mon'] - 2)] : $months [$now['mon'] - 2];
 $last_last_month = (($now['mon'] - 3) < 0) ? $months[10 - ($now['mon'] - 3)] : $months [$now['mon'] - 3];
@@ -96,6 +97,25 @@ $last_last_month = (($now['mon'] - 3) < 0) ? $months[10 - ($now['mon'] - 3)] : $
 $this_month_ts = time() - ($now['mday'] * 3600 * 24 + $now['hours'] * 3600 + $now['minutes'] * 60 + $now['seconds']);
 $last_month_ts = $this_month_ts - (30 * 24 * 3600);
 $last_last_month_ts = $this_month_ts - (2 * 30 * 24 * 3600);
+
+$this_month_income = $wpdb -> get_results("SELECT wp_kt_affs.aff_income from wp_kt_affs inner join wp_kt_orders on wp_kt_affs.order_id=wp_kt_orders.id  where wp_kt_affs.user_id =$user_id and wp_kt_orders.date >$this_month_ts",'ARRAY_N');
+$this_month_income=array_sum( $this_month_income[0]);
+
+$last_month_income = $wpdb -> get_results("SELECT wp_kt_affs.aff_income from wp_kt_affs inner join 
+        wp_kt_orders on wp_kt_affs.order_id=wp_kt_orders.id  
+        where wp_kt_affs.user_id =$user_id  and wp_kt_orders.date >$last_month_ts and 
+        wp_kt_orders.date <$this_month_ts",
+        'ARRAY_N');
+var_dump($last_month_income);
+$last_month_income = (empty ($last_month_income))?0:array_sum( $last_month_income[0]);;
+
+
+$last_last_month_income = $wpdb -> get_results("SELECT wp_kt_affs.aff_income from wp_kt_affs inner join 
+        wp_kt_orders on wp_kt_affs.order_id=wp_kt_orders.id  where wp_kt_affs.user_id =$user_id 
+        and wp_kt_orders.date >$last_month_ts and wp_kt_orders.date <$last_last_month_ts",
+        'ARRAY_N');
+
+$last_last_month_income = (empty ($last_last_month_income))?0:array_sum( $last_last_month_income[0]);;
 ?>
     <h2>Affiliate Status:</h2>
     <p> Your affiliate link is <span> <?php echo site_url() . '/affiliates/' . $current->user_login ?></span></p>
@@ -106,6 +126,12 @@ $last_last_month_ts = $this_month_ts - (2 * 30 * 24 * 3600);
     <h2>Affiliate Earning:</h2>
     Total Amount:  $<?php echo $total_income ?><br/> 
     Paid:$<?php echo $paid; ?>
+    <br/>
+   <h2> Earning by Month:</h2>
+    <b><?php echo $this_month; ?>:</b> <?php echo $this_month_income; ?><br/>
+    <b><?php echo $last_month; ?>:</b> <?php echo $last_month_income; ?><br/>
+    <b><?php echo $last_last_month; ?>:</b> <?php echo $last_last_month_income; ?>
+    
     <h2>Paypal Account Email:</h2>
     <form method="post" action="">
         <input type="text" name="kt_paypal_email" value="<?php echo $user_paypal_email ?>"/>
