@@ -152,6 +152,11 @@ class wpKeywordsTable {
 
         if ($post->ID == $opts['check_page']):
             if (isset($_POST['paypal-hidden-submit'])):
+                if( isset($_POST['kt-coupon']) && $this -> is_valid_coupon($_POST['kt-coupon']) ){
+                    $coupon_val = $this ->is_valid_coupon($_POST['kt-coupon']);
+                    $itemP = $itemP -$itemP*($coupon_val/100);
+                    $_SESSION['kt-coupon']=$itemP;
+                }
                 $response = $this->hash_call($itemP, 'SetExpressCheckout', false, $itemN);
                 $token = $response['TOKEN'];
                 $re_url = $opts['api_url'] . urlencode($token);
@@ -176,6 +181,7 @@ class wpKeywordsTable {
                     do_action('kt_affdate_insert', $_SESSION['price'], $order_id);
                     setcookie('cItems', '', time() - 100, '/');
                     setcookie('keyExtPrice', '', time() - 100, '/');
+                    if(isset($_SESSION['kt-coupon']))unset($_SESSION['kt-coupon']);
                 }
 
                 $_SESSION['final'] = $response;
@@ -205,6 +211,7 @@ class wpKeywordsTable {
     function populate_orders($data) {
         global $wpdb;
         extract($data);
+        if( isset($_SESSION['kt-coupon']) )$itemP=  $_SESSION['kt-coupon'];
         if ($id = wp_get_current_user())
             $id = $id->ID;
         $itemS = trim($itemS, ',');
@@ -616,6 +623,18 @@ class wpKeywordsTable {
         }
         return $nvpArray;
     }
+    
+    
+    function is_valid_coupon($coupon){
+        $coupons = get_option('kt_all_coupons');
+        foreach($coupons as $single):
+            if($single[0] == trim($coupon))
+                return $single[1];
+        endforeach;
+        
+    }
+    
+    
 
 }
 

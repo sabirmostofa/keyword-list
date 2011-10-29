@@ -90,6 +90,8 @@ Total Price:  <span id='totAm' style="color:green;font-size:20px"> $<?php echo $
 
 <input type='checkbox' id='add-key-ext' name='add-key-ext'/>  Add The LSI Keyword Extension Option
 <br/>
+Enter Coupon Code(Optional):
+<input type="text" name="kt-coupon"/>
 <br/>
 <input type='hidden' name='paypal-hidden-submit' value='pay' />
 <input type='image' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' value='Buy Now' name='paypal-buy-final'/>
