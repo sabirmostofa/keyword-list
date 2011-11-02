@@ -32,6 +32,7 @@ class wpKeywordsTable {
         add_action('wp_ajax_show_next', array($this, 'ajax_next_page_show'));
         add_action('wp_ajax_ajax_getId', array($this, 'ajax_process_insert'));
         add_action('wp_ajax_wt_table_show', array($this, 'ajax_display_table'));
+        add_action('wp_ajax_push_keys', array($this, 'ajax_push_keys'));
         add_action('the_content', array($this, 'content_generate'));
         add_action('wp', array($this, 'session_manipulate'));
         add_action('init', array($this, 'update_user'));
@@ -295,6 +296,23 @@ class wpKeywordsTable {
             $wpdb->query("delete from wp_keywords_list where keyword='$key'");
         }
         exit;
+    }
+    
+    function ajax_push_keys(){
+        global $wpdb;    
+        $keys = $_REQUEST['keys'];     
+        $user = $_REQUEST['user'];
+        $user = get_user_by('login', $user);
+        $user_id = $user -> ID;
+        
+        if($meta = get_user_meta($user_id, 'kt-pushed-keys', true))
+                update_user_meta($user_id, 'kt-pushed-keys', $meta. ','.$keys );
+        else
+           update_user_meta($user_id, 'kt-pushed-keys',  $keys);
+           
+        exit;
+        
+        
     }
 
     function create_table() {

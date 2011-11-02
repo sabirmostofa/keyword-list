@@ -72,7 +72,15 @@ foreach ($res as $single) {
             </tr>	
         </tfoot>
     </table>
-
+    
+    <!-- Pushed Keywords -->
+    <h2>Bonus keywords:</h2>
+    <?php 
+    $keys = get_user_meta($user_id, 'kt-pushed-keys', true);
+    if($keys)include 'simple-table-pushed.php';
+    
+    ?>
+    
 <?php
 // Genreating aff vars
 
@@ -89,7 +97,7 @@ $paid = get_user_meta($user_id, 'kt_aff_paid', true) ? get_user_meta($user_id, '
 
 $now = getdate();
 $months = array('January', 'Ferbruary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-echo $this_month = $now['month'];
+$this_month = $now['month'];
 
 $last_month = (($now['mon'] - 2) < 0) ? $months[10 - ($now['mon'] - 2)] : $months [$now['mon'] - 2];
 $last_last_month = (($now['mon'] - 3) < 0) ? $months[10 - ($now['mon'] - 3)] : $months [$now['mon'] - 3];
@@ -137,6 +145,8 @@ $last_last_month_income = (empty ($last_last_month_income))?0:array_sum( $last_l
         <input type="text" name="kt_paypal_email" value="<?php echo $user_paypal_email ?>"/>
         <input type="submit" value="submit"/>
     </form>
+    
+
 
 </div>
 

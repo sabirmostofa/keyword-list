@@ -253,7 +253,40 @@ jQuery(document).ready(function($){
             }
         })	//end of ajax		
 			
-    })// End of Delete Multiple process		
+    })// End of Delete Multiple process
+    
+    
+    
+    //Push selected Keywords
+    $('#kt-push-button').bind('click', function(evt){
+        evt.preventDefault();
+        var ans = confirm('All selected keywords will be Pushed. Are you sure?');
+        if(ans==false)return;
+        var i = 0;
+        var ar = new Array();
+			
+        $('input.checky').each(function(){
+            if( $(this).attr('checked') == true || $(this).attr('checked') == 'checked')
+                ar[i++] = $(this).parents('td').next().next().text();							 
+				 
+        })
+
+        $.ajax({
+            type :  "post",
+            url : ajaxurl,
+            timeout : 5000,
+            data : {
+                'action' : 'push_keys',
+                'user': $('#push_hidden_user').text(),
+                'keys' : ar.join(',')	  
+            },			
+            success :  function(data){
+             alert(data);
+              //  window.location.href=window.location.href;
+            }
+        })	//end of ajax		
+			
+    })// End of Delete Multiple process
 	
 })
 	

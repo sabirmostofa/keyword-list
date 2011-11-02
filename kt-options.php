@@ -306,3 +306,12 @@ foreach($cats as $cat){
 			</tbody>
 
 		</table>
+ <br/>
+ <br/>
+ 
+ <?php if(isset($_SESSION['kt-push-user'])): $user= $_SESSION['kt-push-user'];  ?>
+ Push selected Keywords to user <?php echo $user; ?><br/>
+ <span id="push_hidden_user" style="display:none"><?php echo $user; ?></span>
+<button class="button-primary" id="kt-push-button" value="Push keywords">Push Keywords</button>
+
+<?php endif; ?>
