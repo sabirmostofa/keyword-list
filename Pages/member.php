@@ -78,6 +78,7 @@ foreach ($res as $single) {
     <?php 
     $keys = get_user_meta($user_id, 'kt-pushed-keys', true);
     if($keys)include 'simple-table-pushed.php';
+    else echo 'None';
     
     ?>
     

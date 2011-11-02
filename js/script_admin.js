@@ -281,7 +281,7 @@ jQuery(document).ready(function($){
                 'keys' : ar.join(',')	  
             },			
             success :  function(data){
-             alert(data);
+             alert('Keywords pushed successfully');
               //  window.location.href=window.location.href;
             }
         })	//end of ajax		

@@ -300,12 +300,19 @@ class wpKeywordsTable {
     
     function ajax_push_keys(){
         global $wpdb;    
-        $keys = $_REQUEST['keys'];     
+        $keys = $_REQUEST['keys'];        
+        $keys_array= explode(',', $keys);
+        $meta = get_user_meta($user_id, 'kt-pushed-keys', true);
+                
+         $meta_array   =($meta)? explode(',', $meta) :array();
+         
+         $to_update = array_diff($keys_array, $meta_array);
+         $keys = implode(',', $to_update);
         $user = $_REQUEST['user'];
         $user = get_user_by('login', $user);
         $user_id = $user -> ID;
         
-        if($meta = get_user_meta($user_id, 'kt-pushed-keys', true))
+        if($meta)
                 update_user_meta($user_id, 'kt-pushed-keys', $meta. ','.$keys );
         else
            update_user_meta($user_id, 'kt-pushed-keys',  $keys);
