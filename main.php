@@ -111,6 +111,11 @@ class wpKeywordsTable {
     }
 
     function update_user() {
+        if(isset($_GET['kt-push-user'])){           
+            $_SESSION['kt-push-user']= $_GET['kt-push-user'];    
+        }
+     
+        
         if (isset($_POST['change-pass'])) {
             extract(get_option('kt-settings-var'));
             $check_page = get_permalink($check_page);
